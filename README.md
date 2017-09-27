@@ -13,7 +13,7 @@
  ПАРОЛЯ **secret**
 При желании можно произвести дешифровку этого файла командой 
 ```shell
-$ ansible-vault decrypt vars_decrytp.yml --ask-vault-pass
+$ ansible-vault decrypt vars.yml --ask-vault-pass
 ```
 4. Хосты на которые производится деплой указаны в файле hosts
 в данном примере  
