@@ -1,0 +1,37 @@
+---
+- name: include vars
+  include_vars: vars.yml
+
+# create /tmp/build
+- name: Create directory structure
+  file:
+    path: /tmp/build
+    state: directory
+
+# add settings file
+- name: Copy settings to build dir
+  template: src=../templates/default.py dest=/tmp/build/default.py owner=root group=root mode=0644
+
+- name: copy Dockerfile
+  copy: src=../templates/Dockerfile  dest=/tmp/build/Dockerfile owner=root group=root mode=0640
+
+- name: copy entrypoint
+  copy: src=../templates/entrypoint.sh  dest=/tmp/build/entrypoint.sh owner=root group=root mode=0755
+
+- name: Create postgresql docker container
+  command:  "docker run  --name pgdb  -e POSTGRES_DB={{django.dbname}} -e POSTGRES_PASSWORD={{django.dbpassword}} -e POSTGRES_USER={{django.dbuser}} -v postgresvol:/var/lib/postgresql/data -d postgres:latest"
+
+
+# Build docker container
+- name: Create django docker image
+  command:  "docker build -t mydjangotest:1.0 /tmp/build/"
+
+# Clean build folder
+
+- name: Clean build dir 
+  file: path=/tmp/build/ state=absent
+
+# run docker container
+- name: run container
+  command: "docker run -p 8000:8000 --name mydjangotest1  --link pgdb:pgdb  -d mydjangotest:1.0"
+

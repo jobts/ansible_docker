@@ -1,0 +1,36 @@
+---
+
+- name: Add an Apt signing key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+  when: ansible_os_family == "Debian"
+
+- apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian jessie stable
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Install dependecies packages
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg2
+    - software-properties-common
+
+
+- name: Install docker
+  apt:
+    update_cache: yes
+    name: docker-ce
+    state: present
+  when: ansible_os_family == "Debian"
+
+
+#- name: Install docker compose
+  # shell: "curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose"

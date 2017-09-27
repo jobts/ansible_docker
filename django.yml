@@ -1,0 +1,6 @@
+---
+- hosts: djangodeploy
+  tasks:
+    - import_tasks: roles/dockerinstall.yml
+    - import_tasks: roles/djangocontainers.yml
+
