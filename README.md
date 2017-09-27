@@ -10,10 +10,10 @@
 ---
 
 3. Пеменные согласно задаче, зашифрованы ansible vault в файле vars.yml с помошью
- **ПАРОЛЯ secret**
+ ПАРОЛЯ **secret**
 При желании можно произвести дешифровку этого файла командой 
 ```shell
-ansible-vault decrypt vars_decrytp.yml --ask-vault-pass
+$ ansible-vault decrypt vars_decrytp.yml --ask-vault-pass
 ```
 4. Хосты на которые производится деплой указаны в файле hosts
 в данном примере  
@@ -28,28 +28,28 @@ djangodeploy
 5. Производим деплой приложения с помощью команды
 
 ```shell
-ansible-playbook -D django.yml --ask-vault-pass  
+$ ansible-playbook -D django.yml --ask-vault-pass  
 ```
 Вводим пароль от vault хранилища переменных.
 
 Как вариант можно создать файл с паролем и указывать его через параметр --vault-password-file
 
 ```shell
-ansible-playbook -D django.yml  --vault-password-file vaultpass
+$ ansible-playbook -D django.yml  --vault-password-file vaultpass
 ```
 Тест деплоя 
 ```shell
-ansible-playbook -СD django.yml --ask-vault-pass  
+$ ansible-playbook -СD django.yml --ask-vault-pass  
 ```
 
 6. После успешного деплоя, на хосте, на который производится деплой можно посмотреть работу двух новых контейнеров командой
 ```shell
-docker ps -a
+# docker ps -a
 ```
 Контейнер с приложением django работает на порту 8000
 
 Также в браузере можно открыть url, в данном примере
-http://192.1680.100:8000 
+http://192.168.1.10:8000 
 
 7. Данные второго контейнера с postgresql хранятся в volume postgresvol
 ```shell
